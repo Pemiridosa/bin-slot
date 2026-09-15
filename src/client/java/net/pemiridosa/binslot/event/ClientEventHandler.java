@@ -1,5 +1,6 @@
 package net.pemiridosa.binslot.event;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.pemiridosa.binslot.extension.BinSlot;
 import net.pemiridosa.binslot.event.callback.HandledScreenMouseClickCallback;
 import net.pemiridosa.binslot.event.callback.BinSlotHoverCallback;
@@ -18,7 +19,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
@@ -43,9 +43,8 @@ public class ClientEventHandler {
         );
 
         if (isCreativeInventory || isHoveringOverBinSlot) {
-            long windowHandle = Minecraft.getInstance().getWindow().handle();
-            boolean isShiftClick = GLFW.glfwGetKey(windowHandle, GLFW.GLFW_KEY_LEFT_SHIFT) == GLFW.GLFW_PRESS
-                || GLFW.glfwGetKey(windowHandle, GLFW.GLFW_KEY_RIGHT_SHIFT) == GLFW.GLFW_PRESS;
+            boolean isShiftClick = InputConstants.isKeyDown(InputConstants.KEY_LSHIFT)
+                || InputConstants.isKeyDown(InputConstants.KEY_RSHIFT);
 
             MouseClickC2SPayload payload = new MouseClickC2SPayload(itemStack, isRightClick, isShiftClick, isCreativeInventory);
 

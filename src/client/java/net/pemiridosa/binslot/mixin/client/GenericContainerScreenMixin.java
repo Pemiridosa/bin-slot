@@ -1,5 +1,6 @@
 package net.pemiridosa.binslot.mixin.client;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.pemiridosa.binslot.event.callback.BinSlotHoverCallback;
 import net.pemiridosa.binslot.mixin.client.accessor.HandledScreenAccessor;
 import net.pemiridosa.binslot.mixin.client.accessor.ScreenAccessor;
@@ -13,7 +14,6 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.world.inventory.Slot;
-import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -129,9 +129,8 @@ public class GenericContainerScreenMixin {
                 ScreenAccessor screenAccessor = (ScreenAccessor) accessor;
 
                 if (isHoveringOverBinSlot) {
-                    long windowHandle = Minecraft.getInstance().getWindow().handle();
-                    boolean isShiftDown = GLFW.glfwGetKey(windowHandle, GLFW.GLFW_KEY_LEFT_SHIFT) == GLFW.GLFW_PRESS
-                        || GLFW.glfwGetKey(windowHandle, GLFW.GLFW_KEY_RIGHT_SHIFT) == GLFW.GLFW_PRESS;
+                    boolean isShiftDown = InputConstants.isKeyDown(InputConstants.KEY_LSHIFT)
+                        || InputConstants.isKeyDown(InputConstants.KEY_RSHIFT);
 
                     BinSlotHoverCallback.EVENT.invoker().onBinSlotHover(
                         screenAccessor.getTextRenderer(),
